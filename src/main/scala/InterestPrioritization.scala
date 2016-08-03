@@ -1,13 +1,27 @@
+import scala.util.Random
+
 /**
   * Created by vikram on 8/1/16.
   */
 object InterestPrioritization extends App {
   import Chromosome._
 
-  val input: List[List[Float]] = List(List(.10f, .20f, .70f), List(.40f, .50f, .10f), List(.25f, .27f, .48f))
+//  val input: List[List[Float]] = List(List(.10f, .20f, .70f), List(.40f, .50f, .10f), List(.25f, .27f, .48f))
+
+  def sampleDataFor(numPeople: Int, numInterests: Int) : List[List[Float]] = {
+    def randomInterests(n: Int): List[Float] = {
+      val l = List.fill(n)(Random.nextFloat())
+      l.map(_ / l.sum)
+    }
+    List.fill(numPeople)(randomInterests(numInterests))
+  }
+
+  //50 people, 30 interests
+  val input: List[List[Float]] = sampleDataFor(50, 30)
 
   require(input.map(_.size).distinct.size == 1, "all input rows should contain same number of columns")
-  require(input.map(_.sum).toSet == Set(1f), "all input rows should total 1")
+  //todo this is a really awkward requirement that probably shouldn't exist
+  require(input.map(l ⇒ math.round(l.sum)).toSet == Set(1f), "all input rows should total 1")
 
 
   //Hyperparameters //todo set these via command line
@@ -41,12 +55,12 @@ object InterestPrioritization extends App {
     if !mostFit.exists(_.satisfiesThreshold())
   } {
     println(s"generation: $generation")
+    println(mostFit.map(_.getData))
     println(s"highest fitness: ${mostFit.map(_.fitness + "").getOrElse("n/a")}")
     ecosystem.evolve()
   }
 
   val mostFit = ecosystem.findAlphaOrganism()
   println(mostFit.get.getData)
-
 
 }

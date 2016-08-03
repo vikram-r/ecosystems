@@ -14,7 +14,6 @@ object Chromosome {
     * @return
     */
   def apply(size: Int)(implicit IDEAL_FITNESS: IdealFitness): Chromosome = {
-
     /*
      * generate an integer number line from 0 to 100, mark size - 1 random points on the line
      * calculate the spaces between each random point on the line to generate a random list of size that sums 100
@@ -51,7 +50,8 @@ object Chromosome {
   object IdealFitness {
     def apply(input: List[List[Float]], threshold: Float): IdealFitness = {
       require(threshold >= 0f && threshold <= 1f, "Acceptable threshold percentage must be between 0 and 1")
-      val combinedInputs = input.transpose.map(_.sum)
+      val transposed = input.transpose.map(_.sum)
+      val combinedInputs = transposed.map(_ / transposed.size)
       val idealSum = combinedInputs.size * 1
       IdealFitness(
         idealSum = idealSum,
@@ -94,7 +94,10 @@ class Chromosome(data: List[Int])(implicit val IDEAL_FITNESS: IdealFitness) {
     * @return true if this chromosome meets the threshold,
     *         false otherwise
     */
-  def satisfiesThreshold() = IDEAL_FITNESS.thresholdFitness < fitness
+  def satisfiesThreshold() = {
+    println(s"thresholdFitness: ${IDEAL_FITNESS.thresholdFitness} vs $fitness")
+    fitness < IDEAL_FITNESS.thresholdFitness
+  }
 
   def getData = data
 

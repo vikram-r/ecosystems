@@ -33,12 +33,12 @@ class Ecosystem(val numChromosomes: Int,
   }
 
   /**
-    * Find the organism with the highest fitness in this Ecosystem
+    * Find the organism with the highest fitness in this Ecosystem (lowest value)
     *
     * @return Some(o) where o is the organism with the highest fitness,
     *         None if no organisms in this Ecosystem
     */
-  def findAlphaOrganism(): Option[Chromosome] = Try(organisms.maxBy(_.fitness)).toOption
+  def findAlphaOrganism(): Option[Chromosome] = Try(organisms.minBy(_.fitness)).toOption
 
 
 }
