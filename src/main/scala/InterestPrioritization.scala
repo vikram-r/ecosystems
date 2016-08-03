@@ -4,10 +4,10 @@
 object InterestPrioritization extends App {
   import Chromosome._
 
-  val input: List[List[Float]] = List(List(10, 20, 70), List(40, 50, 10), List(25, 27, 48))
+  val input: List[List[Float]] = List(List(.10f, .20f, .70f), List(.40f, .50f, .10f), List(.25f, .27f, .48f))
 
   require(input.map(_.size).distinct.size == 1, "all input rows should contain same number of columns")
-  require(input.map(_.sum).toSet == Set(100), "all input rows should total 100")
+  require(input.map(_.sum).toSet == Set(1f), "all input rows should total 1")
 
 
   //Hyperparameters //todo set these via command line

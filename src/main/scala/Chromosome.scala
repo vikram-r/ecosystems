@@ -8,16 +8,24 @@ import Chromosome._
 object Chromosome {
 
   /**
-    * create a chromozone with random values for the given size
+    * Create a chromosome with random values for the given size
     *
     * @param size of the chromosome
     * @return
     */
   def apply(size: Int)(implicit IDEAL_FITNESS: IdealFitness): Chromosome = {
-    val rawData = List.fill(size)(Random.nextInt(100))
-    val sum = rawData.sum
+
+    /*
+     * generate an integer number line from 0 to 100, mark size - 1 random points on the line
+     * calculate the spaces between each random point on the line to generate a random list of size that sums 100
+     */
+    val randomizedData = (List.fill(size - 1)(Random.nextInt(99) + 1) ++ List(0,100))
+      .sorted
+      .sliding(2)
+      .map(tuple ⇒ tuple.last - tuple.head).toList
+
     new Chromosome(
-      data = rawData.map(d ⇒ (d / sum) * 100) //normalize //todo this arithmetic is wrong
+      data = randomizedData
     )
   }
 
@@ -48,8 +56,8 @@ object Chromosome {
       IdealFitness(
         idealSum = idealSum,
         thresholdFitness = (idealSum - (idealSum * threshold)).toInt, //todo double check this int cast
-        combinedInputs.size,
-        combinedInputs
+        chromosomeSize = combinedInputs.size,
+        aggregatedInput = combinedInputs
       ) //todo eventually add negatives
     }
   }
