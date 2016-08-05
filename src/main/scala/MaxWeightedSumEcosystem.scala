@@ -1,4 +1,3 @@
-import scala.util.Try
 import Chromosome._
 
 //todo eventually do fitness calculations in parallel
@@ -7,38 +6,22 @@ import Chromosome._
   */
 class MaxWeightedSumEcosystem(val numChromosomes: Int,
                               val mutationRate: Float,
-                              val elitismRate: Float)(implicit val idealFitness: IdealFitness) {
+                              val elitismRate: Float)(implicit val inputData: InputData) extends Ecosystem {
 
-  var numEvolutions: Int = 0
-
-  var organisms: List[Chromosome] = initialPopulation //the current inhabitants of this ecosystem
+  def maxWeightedSumFitnessFunc(data: List[Int]): Float = {
+    val b = data.zip(inputData.data).map(e ⇒ e._1 * e._2).sum
+    println(s"calculated fitness: $b")
+    b
+  }
 
   /**
     * Randomly generate the appropriate number of chromosomes for an initial population
     *
     * @return the list of randomly generated chromosomes
     */
-  def initialPopulation: List[Chromosome] =
-    List.fill(numChromosomes)(Chromosome.apply(idealFitness.chromosomeSize))
-
-  /**
-    * Perform an evolution step
-    *
-    */
-  def evolve(): Unit = {
-    println("evolving!")
-    //todo FUN STUFF
-
-    numEvolutions += 1
+  def initialPopulation: List[Chromosome] = {
+    val a = List.fill(numChromosomes)(Chromosome.apply(inputData.size, maxWeightedSumFitnessFunc))
+    println(s"pop: ${a.map(_.getData)}")
+    a
   }
-
-  /**
-    * Find the organism with the highest fitness in this Ecosystem (lowest value)
-    *
-    * @return Some(o) where o is the organism with the highest fitness,
-    *         None if no organisms in this Ecosystem
-    */
-  def findAlphaOrganism(): Option[Chromosome] = Try(organisms.minBy(_.fitness)).toOption
-
-
 }
