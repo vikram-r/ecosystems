@@ -5,9 +5,9 @@ import Chromosome._
 /**
   * Habitat for Chromosomes, used to simulate each evolution step
   */
-class Ecosystem(val numChromosomes: Int,
-                val mutationRate: Float,
-                val elitismRate: Float)(implicit val idealFitness: IdealFitness) {
+class MaxWeightedSumEcosystem(val numChromosomes: Int,
+                              val mutationRate: Float,
+                              val elitismRate: Float)(implicit val idealFitness: IdealFitness) {
 
   var numEvolutions: Int = 0
 

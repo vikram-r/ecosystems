@@ -16,7 +16,7 @@ object Chromosome {
   def apply(size: Int)(implicit IDEAL_FITNESS: IdealFitness): Chromosome = {
     /*
      * generate an integer number line from 0 to 100, mark size - 1 random points on the line
-     * calculate the spaces between each random point on the line to generate a random list of size that sums 100
+     * calculate the spaces between each random point on the line to generate a random int list of size that sums 100
      */
     val randomizedData = (List.fill(size - 1)(Random.nextInt(99) + 1) ++ List(0,100))
       .sorted

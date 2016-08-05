@@ -43,7 +43,7 @@ object InterestPrioritization extends App {
 
   implicit val IDEAL_FITNESS = IdealFitness(input, ACCEPTABLE_THRESHOLD)
 
-  val ecosystem = new Ecosystem(
+  val ecosystem = new MaxWeightedSumEcosystem(
     numChromosomes = NUM_CHROMOSOMES,
     mutationRate = MUTATION_RATE,
     elitismRate = ELITISM_RATE
