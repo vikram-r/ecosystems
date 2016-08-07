@@ -1,16 +1,9 @@
-import scala.util.Random
 
 /**
   * Created by vikram on 8/1/16.
   */
 object Console extends App {
-  import Chromosome._
-
   import ListHelpers._
-  def randomInput(size: Int, sum: Int): List[Int] = List.randomListWithSum(size, sum)
-
-  val input: List[Int] = randomInput(size = 15, sum = 100)
-  println(s"input: $input")
 
   //Hyperparameters //todo set these via command line
 
@@ -29,7 +22,8 @@ object Console extends App {
   //Threshold percentage of optimal fitness acceptable as result
   val ACCEPTABLE_THRESHOLD = .95f
 
-  implicit val inputData = new MaxWeightedSumInputData(input, ACCEPTABLE_THRESHOLD)
+  val weightedMaxSum = 100
+  implicit val inputData = new MaxWeightedSumInputData(List.randomListWithSum(15, weightedMaxSum), weightedMaxSum, ACCEPTABLE_THRESHOLD)
 
   val ecosystem = new MaxWeightedSumEcosystem(
     numChromosomes = NUM_CHROMOSOMES,

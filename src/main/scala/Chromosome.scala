@@ -1,4 +1,3 @@
-import Chromosome._
 
 /**
   * Representation of a chromosome
@@ -6,18 +5,9 @@ import Chromosome._
   */
 object Chromosome {
 
-  /**
-    * Create a chromosome with random values for the given size
-    *
-    * @param size of the chromosome
-    * @return
-    */
-  def apply(size: Int, fitnessFunc: (List[Int]) ⇒ Float)(implicit inputData: InputData): Chromosome = {
-    import ListHelpers._
-
-    //todo is this 100 a global constraint, or should it be configurable?
+  def apply(data: List[Int], fitnessFunc: (List[Int]) ⇒ Float)(implicit inputData: InputData): Chromosome = {
     new Chromosome(
-      data = List.randomListWithSum(size, 100),
+      data = data,
       fitnessFunc = fitnessFunc
     )
   }

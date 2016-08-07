@@ -13,8 +13,14 @@ sealed trait InputData {
 
 }
 
-class MaxWeightedSumInputData(val data: List[Int], val threshold: Float) extends InputData {
+class MaxWeightedSumInputData(val data: List[Int],
+                              val maxSum: Int,
+                              val threshold: Float) extends InputData {
 
-  override val optimalFitness: Float = data.max * size
+  require(data.sum == maxSum, s"MaxWeightedSumInputData must be a list of integers that sums $maxSum")
+  println(s"Input Data: $data")
+
+  //todo this fitness function is not correct
+  override val optimalFitness: Float = data.max * maxSum
 
 }
