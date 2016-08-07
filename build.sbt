@@ -1,4 +1,4 @@
-name := "interest-prioritization"
+name := "ecosystems"
 
 version := "1.0"
 

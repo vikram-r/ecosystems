@@ -3,7 +3,7 @@ import scala.util.Random
 /**
   * Created by vikram on 8/1/16.
   */
-object InterestPrioritization extends App {
+object Console extends App {
   import Chromosome._
 
   import ListHelpers._
