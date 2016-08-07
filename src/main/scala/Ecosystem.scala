@@ -10,6 +10,7 @@ trait Ecosystem {
   var organisms: List[Chromosome] = initialPopulation //the current inhabitants of this ecosystem
 
   val numChromosomes: Int
+  val crossoverRate: Float
   val mutationRate: Float
   val elitismRate: Float
 
@@ -24,12 +25,7 @@ trait Ecosystem {
     * Perform an evolution step
     *
     */
-  def evolve() = {
-    println("evolving!")
-    //todo PARALLEL STUFF
-
-    numEvolutions += 1
-  }
+  def evolve()
 
   /**
     * Find the organism with the highest fitness in this Ecosystem

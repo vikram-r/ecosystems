@@ -10,6 +10,9 @@ object Console extends App {
   //number of chromosomes per generation
   val NUM_CHROMOSOMES = 100
 
+  //percent of chromosomes that are allowed to mate per generation
+  val CROSSOVER_RATE = .90f
+
   //percent of chromosomes mutated per generation
   val MUTATION_RATE = .02f
 
@@ -17,7 +20,7 @@ object Console extends App {
   val ELITISM_RATE = .01f
 
   //max number of evolution steps
-  val MAX_EVOLUTIONS = 100
+  val MAX_EVOLUTIONS = 10000
 
   //Threshold percentage of optimal fitness acceptable as result
   val ACCEPTABLE_THRESHOLD = .95f
@@ -27,6 +30,7 @@ object Console extends App {
 
   val ecosystem = new MaxWeightedSumEcosystem(
     numChromosomes = NUM_CHROMOSOMES,
+    crossoverRate = CROSSOVER_RATE,
     mutationRate = MUTATION_RATE,
     elitismRate = ELITISM_RATE
   )
