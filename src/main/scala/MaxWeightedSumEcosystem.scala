@@ -25,13 +25,16 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
   override def initialPopulation: List[Chromosome] = {
     import ListHelpers._
     val a = List.fill(numChromosomes)(Chromosome(List.randomListWithSum(inputData.size, inputData.maxSum), maxWeightedSumFitnessFunc))
-    println(s"pop: ${a.map(_.getData)}")
+    println(s"pop: ${a.map(_.data)}")
     a
   }
 
 
   override def evolve() = {
-    println("evolving!")
+    println(s"printing generation $numEvolutions")
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    println(organisms.mkString("\n"))
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     val elitismNum = (elitismRate * numChromosomes).toInt
     val crossoverNum = (crossoverRate * numChromosomes).toInt
@@ -42,12 +45,15 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
 
     //iterator to generate new children
     val c = Iterator.continually {
-      //randomly select 2 chromosomes from the breeding pool to mate
-      Chromosome.mate(
-        breedingPool(Random.nextInt(breedingPool.size)),
-        breedingPool(Random.nextInt(breedingPool.size))
+      //randomly select 2 chromosomes from the breeding pool to mate. Chromosomes can't mate with self
+      val firstIndex = Random.nextInt(breedingPool.size)
+      val secondIndex = Iterator.continually(Random.nextInt(breedingPool.size)).dropWhile(_ == firstIndex).next() //todo verify this
+
+      Chromosome.uniformCrossover(
+        breedingPool(firstIndex),
+        breedingPool(secondIndex)
       )
-    }
+    }.flatMap(e ⇒ List(e._1, e._2))
 
     val newGeneration = sorted.take(elitismNum) ++ c.take(sorted.size - elitismNum)
 

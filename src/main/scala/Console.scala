@@ -11,13 +11,13 @@ object Console extends App {
   val NUM_CHROMOSOMES = 100
 
   //percent of chromosomes that are allowed to mate per generation
-  val CROSSOVER_RATE = .90f
+  val CROSSOVER_RATE = .80f
 
   //percent of chromosomes mutated per generation
   val MUTATION_RATE = .02f
 
   //percent of chromosomes preserved per generation
-  val ELITISM_RATE = .01f
+  val ELITISM_RATE = .00f
 
   //max number of evolution steps
   val MAX_EVOLUTIONS = 10000
@@ -35,18 +35,26 @@ object Console extends App {
     elitismRate = ELITISM_RATE
   )
 
+  var continue = true //todo gross, this should be refactored
   for {
     generation ← 0 until MAX_EVOLUTIONS
-    mostFit = ecosystem.findAlphaOrganism()
-    if !mostFit.exists(_.satisfiesThreshold())
+    if continue
   } {
     println(s"generation: $generation")
-    println(mostFit.map(_.getData))
-    println(s"highest fitness: ${mostFit.map(_.fitness + "").getOrElse("n/a")}")
     ecosystem.evolve()
+
+    val mostFit = ecosystem.findAlphaOrganism()
+    println(mostFit.map(_.data))
+    println(s"highest fitness: ${mostFit.map(_.fitness + "").getOrElse("n/a")}")
+
+    if (mostFit.exists(_.satisfiesThreshold())) {
+      println("threshold met!")
+      continue = false
+    }
+
   }
 
   val mostFit = ecosystem.findAlphaOrganism()
-  println(mostFit.get.getData)
+  println(mostFit.get.data)
 
 }
