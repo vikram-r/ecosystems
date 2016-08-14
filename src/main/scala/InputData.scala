@@ -13,7 +13,7 @@ sealed trait InputData {
 
   val threshold: Float
 
-  val newChromosomeDataElem: () ⇒ Int //a way to define how a data element in a chromosome is randomly created
+  def newChromosomeDataElem(): Int //a way to define how a data element in a chromosome is randomly created
 
 }
 
@@ -25,6 +25,6 @@ class MaxWeightedSumInputData(val data: List[Int],
 
   override val optimalFitness: Float = data.sum * 100
 
-  override val newChromosomeDataElem = () ⇒ Random.nextInt(maxSum)
+  override def newChromosomeDataElem() = Random.nextInt(maxSum)
 
 }
