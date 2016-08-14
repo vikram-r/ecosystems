@@ -23,10 +23,8 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
     * @return the list of randomly generated chromosomes
     */
   override def initialPopulation: List[Chromosome] = {
-    import ListHelpers._
-    val a = List.fill(numChromosomes)(Chromosome(List.randomListWithSum(inputData.size, inputData.maxSum), maxWeightedSumFitnessFunc))
-    println(s"pop: ${a.map(_.data)}")
-    a
+    //todo this is simplified so output data does not have to sum maxSum. Should be changed once crossover is refactored to only generate such that the constraint matches
+    List.fill(numChromosomes)(Chromosome(List.fill(inputData.size)(inputData.newChromosomeDataElem()), maxWeightedSumFitnessFunc))
   }
 
 
@@ -37,8 +35,7 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
     println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     val elitismNum = (elitismRate * numChromosomes).toInt
-    val crossoverNum = (crossoverRate * numChromosomes).toInt
-    val mutationNum = (mutationRate * numChromosomes).toInt
+    val crossoverNum = (crossoverRate * numChromosomes).toInt //todo change this so crossover rate is randomly determined instead of forced
 
     val sorted = organisms.sortBy(_.fitness).reverse
     val breedingPool = sorted.slice(elitismNum, elitismNum + crossoverNum)
@@ -56,10 +53,9 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
     }.flatMap(e ⇒ List(e._1, e._2))
 
     val newGeneration = sorted.take(elitismNum) ++ c.take(sorted.size - elitismNum)
+    val mutatedGeneration = newGeneration.map(c ⇒ if (Random.nextFloat() <= mutationRate) c.mutate() else c)
 
-    //todo mutation
-
-    organisms = newGeneration
+    organisms = mutatedGeneration
     numEvolutions += 1
   }
 }

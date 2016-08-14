@@ -13,8 +13,8 @@ object Console extends App {
   //percent of chromosomes that are allowed to mate per generation
   val CROSSOVER_RATE = .80f
 
-  //percent of chromosomes mutated per generation
-  val MUTATION_RATE = .02f
+  //percent chance of a chromosomes to mutate per generation
+  val MUTATION_RATE = .05f
 
   //percent of chromosomes preserved per generation
   val ELITISM_RATE = .00f
@@ -23,7 +23,7 @@ object Console extends App {
   val MAX_EVOLUTIONS = 10000
 
   //Threshold percentage of optimal fitness acceptable as result
-  val ACCEPTABLE_THRESHOLD = .95f
+  val ACCEPTABLE_THRESHOLD = 1f
 
   val weightedMaxSum = 100
   implicit val inputData = new MaxWeightedSumInputData(List.randomListWithSum(15, weightedMaxSum), weightedMaxSum, ACCEPTABLE_THRESHOLD)

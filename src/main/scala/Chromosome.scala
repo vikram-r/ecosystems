@@ -60,16 +60,9 @@ case class Chromosome(data: List[Int], fitnessFunc: (List[Int]) ⇒ Float)(impli
     * @return the mutated chromosome
     */
   def mutate(): Chromosome = {
-    //todo this should probably be better
-    //at 2 random indexes, change the values with some other pair that totals the same sum
-
     val i1 = Random.nextInt(data.size)
     val i2 = Iterator.continually(Random.nextInt(data.size)).dropWhile(_ == i1).next //make sure i2 != i1
-
-    val sum = i1 + i2
-    val rand = Random.nextInt(sum + 1)
-
-    Chromosome(data = data.updated(i1, rand).updated(i2, sum - rand), fitnessFunc = this.fitnessFunc)
+    Chromosome(data = data.updated(i1, inputData.newChromosomeDataElem()).updated(i2, inputData.newChromosomeDataElem()), fitnessFunc = this.fitnessFunc)
   }
 
   /**
