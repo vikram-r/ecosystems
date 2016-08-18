@@ -13,8 +13,15 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
                               val mutationRate: Float,
                               val elitismRate: Float)(implicit val inputData: MaxWeightedSumInputData) extends Ecosystem {
 
+  /**
+    * This fitness function calculates the dot product, and penalizes based
+    * on how far the data is from meeting the constraint (all data values sum maxSum)
+    */
   def maxWeightedSumFitnessFunc(data: List[Int]): Float = {
-    data.zip(inputData.data).map(e ⇒ e._1 * e._2).sum
+    val weightedSum = data.zip(inputData.data).map(e ⇒ e._1 * e._2).sum
+    val percentOffConstraint = math.abs(data.sum - inputData.maxSum) / inputData.maxSum.toFloat
+
+    weightedSum - (percentOffConstraint * weightedSum)
   }
 
   /**

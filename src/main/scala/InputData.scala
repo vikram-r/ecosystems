@@ -21,9 +21,7 @@ class MaxWeightedSumInputData(val data: List[Int],
                               val maxSum: Int,
                               val threshold: Float) extends InputData {
 
-  //todo for now I simplified this fitness function, because crossover was unable to meet the all output data sums maxSum constraint
-
-  override val optimalFitness: Float = data.sum * 100
+  override val optimalFitness: Float = data.max * 100
 
   override def newChromosomeDataElem() = Random.nextInt(maxSum)
 
