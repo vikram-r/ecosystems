@@ -1,4 +1,4 @@
-import scala.util.Try
+import scala.util.{Random, Try}
 
 /**
   * Habitat for Chromosomes, used to simulate each evolution step
@@ -25,7 +25,36 @@ trait Ecosystem {
     * Perform an evolution step
     *
     */
-  def evolve()
+  def evolve() = {
+    println(s"printing generation $numEvolutions")
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    println(organisms.mkString("\n"))
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    val elitismNum = (elitismRate * numChromosomes).toInt
+    val crossoverNum = (crossoverRate * numChromosomes).toInt
+
+    val sorted = organisms.sortBy(_.fitness).reverse
+    val breedingPool = sorted.slice(elitismNum, elitismNum + crossoverNum)
+
+    //iterator to generate new children
+    val c = Iterator.continually {
+      //randomly select 2 chromosomes from the breeding pool to mate. Chromosomes can't mate with self
+      val firstIndex = Random.nextInt(breedingPool.size)
+      val secondIndex = Iterator.continually(Random.nextInt(breedingPool.size)).dropWhile(_ == firstIndex).next()
+
+      Chromosome.uniformCrossover(
+        breedingPool(firstIndex),
+        breedingPool(secondIndex)
+      )
+    }.flatMap(e ⇒ List(e._1, e._2))
+
+    val newGeneration = sorted.take(elitismNum) ++ c.take(sorted.size - elitismNum)
+    val mutatedGeneration = newGeneration.map(c ⇒ if (Random.nextFloat() <= mutationRate) c.mutate() else c)
+
+    organisms = mutatedGeneration
+    numEvolutions += 1
+  }
 
   /**
     * Find the organism with the highest fitness in this Ecosystem
