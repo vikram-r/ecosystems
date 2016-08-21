@@ -55,7 +55,7 @@ object Console extends App {
   }
   println("**************************************")
   println(s"Optimal Fitness: ${inputData.optimalFitness}")
-  println(s"Input data: ${inputData.data}")
+  println(s"Input data: ${inputData.inputData}")
 
   val mostFit = ecosystem.findAlphaOrganism()
   println(s"Most fit  : ${mostFit.get.data}")

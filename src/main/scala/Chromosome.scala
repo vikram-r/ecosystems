@@ -40,9 +40,9 @@ object Chromosome {
 
 //todo consider using a Vector instead of a List to represent underlying data
 //todo why is this not a case class?
-case class Chromosome(data: List[Int], fitnessFunc: (List[Int]) ⇒ Float)(implicit val inputData: InputData) {
+case class Chromosome(data: List[Int], fitnessFunc: (Chromosome) ⇒ Float)(implicit val inputData: InputData) {
 
-  lazy val fitness: Float = fitnessFunc(data)
+  lazy val fitness: Float = fitnessFunc(this)
 
   /**
     * Calculate this chromosome's fitness

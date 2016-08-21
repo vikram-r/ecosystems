@@ -14,24 +14,13 @@ class MaxWeightedSumEcosystem(val numChromosomes: Int,
                               val elitismRate: Float)(implicit val inputData: MaxWeightedSumInputData) extends Ecosystem {
 
   /**
-    * This fitness function calculates the dot product, and penalizes based
-    * on how far the data is from meeting the constraint (all data values sum maxSum)
-    */
-  def maxWeightedSumFitnessFunc(data: List[Int]): Float = {
-    val weightedSum = data.zip(inputData.data).map(e ⇒ e._1 * e._2).sum
-    val percentOffConstraint = math.abs(data.sum - inputData.maxSum) / inputData.maxSum.toFloat
-
-    weightedSum - (percentOffConstraint * weightedSum)
-  }
-
-  /**
     * Randomly generate the appropriate number of chromosomes for an initial population
     *
     * @return the list of randomly generated chromosomes
     */
   override def initialPopulation: List[Chromosome] = {
     //todo this is simplified so output data does not have to sum maxSum. Should be changed once crossover is refactored to only generate such that the constraint matches
-    List.fill(numChromosomes)(Chromosome(List.fill(inputData.size)(inputData.newChromosomeDataElem()), maxWeightedSumFitnessFunc))
+    List.fill(numChromosomes)(Chromosome(List.fill(inputData.size)(inputData.newChromosomeDataElem()), inputData.fitnessFunc))
   }
 
 
