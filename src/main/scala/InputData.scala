@@ -23,7 +23,7 @@ class MaxWeightedSumInputData(val inputData: List[Int],
                               val maxSum: Int,
                               val threshold: Float) extends InputData {
 
-  override val optimalFitness: Float = inputData.max * 100
+  override val optimalFitness: Float = inputData.max * maxSum
 
   override def newOrganismDataElem() = Random.nextInt(maxSum)
 
