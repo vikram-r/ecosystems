@@ -5,8 +5,6 @@
 object Console extends App {
   import ListHelpers._
 
-  //Hyperparameters //todo set these via command line
-
   //number of organisms per generation
   val NUM_ORGANISMS = 100
 
@@ -26,15 +24,14 @@ object Console extends App {
   val ACCEPTABLE_THRESHOLD = 1f
 
   val weightedMaxSum = 100
-  val inputData = List.randomListWithSum(15, weightedMaxSum)
 
   val ecosystem = new MaxWeightedSumEcosystem(
+    inputData = List.randomListWithSum(15, weightedMaxSum),
     numOrganisms = NUM_ORGANISMS,
     crossoverRate = CROSSOVER_RATE,
     mutationRate = MUTATION_RATE,
     elitismRate = ELITISM_RATE,
     threshold = ACCEPTABLE_THRESHOLD,
-    inputData = inputData,
     maxSum = weightedMaxSum
   )
 
@@ -42,8 +39,9 @@ object Console extends App {
 
   println("**************************************")
   println(s"Optimal Fitness: ${result.alphaOrganism.optimalFitness}")
-  println(s"Input data: ${inputData}")
-  println(s"Most fit  : ${result.alphaOrganism.data}")
+  println(s"Highest Fitness: ${result.alphaOrganism.fitness}")
+  println(s"Input data   : ${result.inputData}")
+  println(s"Most fit data: ${result.alphaOrganism}")
 
   println(s"Result: $result")
 }

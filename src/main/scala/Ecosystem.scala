@@ -1,4 +1,4 @@
-import scala.util.{Random, Try}
+import scala.util.Random
 
 //todo eventually do fitness calculations in parallel
 /**
@@ -10,6 +10,7 @@ trait Ecosystem[T <: Organism[T]] {
   var numEvolutions: Int = 0
   var organisms = initialPopulation //the current inhabitants of this ecosystem
 
+  val inputData: List[Int]
   val numOrganisms: Int
   val crossoverRate: Float
   val mutationRate: Float
@@ -20,7 +21,8 @@ trait Ecosystem[T <: Organism[T]] {
 
   case class ResultData(alphaOrganism: T,
                         metThreshold: Boolean,
-                        numEvolutions: Int)
+                        numEvolutions: Int,
+                        inputData: List[Int])
 
   /**
     * Randomly generate the appropriate number of organisms for an initial population
@@ -30,7 +32,7 @@ trait Ecosystem[T <: Organism[T]] {
   def initialPopulation: List[T]
 
   /**
-    * Start the simulation for the given number of cycles
+    * Start the simulation for the given number of cycles, or until the threshold is reached
     *
     * @param maxEvolutions the max number of times to evolve
     */
@@ -45,10 +47,20 @@ trait Ecosystem[T <: Organism[T]] {
       println(s"highest fitness: ${mostFit.fitness}")
 
       if (mostFit.satisfiesThreshold(threshold)) {
-        return ResultData(alphaOrganism = mostFit, metThreshold = true, numEvolutions = numEvolutions)
+        return ResultData(
+          alphaOrganism = mostFit,
+          metThreshold = true,
+          numEvolutions = numEvolutions,
+          inputData = inputData
+        )
       }
     }
-    ResultData(alphaOrganism = findAlphaOrganism(), metThreshold = false, numEvolutions = numEvolutions)
+    ResultData(
+      alphaOrganism = findAlphaOrganism(),
+      metThreshold = false,
+      numEvolutions = numEvolutions,
+      inputData = inputData
+    )
   }
 
   /**

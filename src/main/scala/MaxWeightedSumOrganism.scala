@@ -14,7 +14,7 @@ class MaxWeightedSumOrganism(data: List[Int], maxSum: Int, inputData: List[Int])
   override def factory: (List[Int]) ⇒ MaxWeightedSumOrganism =
     (d: List[Int]) ⇒ MaxWeightedSumOrganism.newInstance(d, maxSum, inputData)
 
-  override def getFitness: Float = {
+  override def fitnessFunction: Float = {
     val weightedSum = data.zip(inputData).map(e ⇒ e._1 * e._2).sum
     val percentOffConstraint = math.abs(data.sum - maxSum) / maxSum.toFloat
 

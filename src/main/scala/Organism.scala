@@ -43,21 +43,25 @@ object Organism {
 //todo consider using a Vector instead of a List to represent underlying data
 abstract class Organism[T <: Organism[T]](val data: List[Int]) {
 
-  //todo must be better way to do this
-  lazy val fitness: Float = getFitness
+  lazy val fitness: Float = fitnessFunction
 
   val optimalFitness: Float
 
   def factory: (List[Int]) ⇒ T
 
   /**
-    * Calculate this organism's fitness
+    * Calculate this organism's fitness. This method should not be called directly, use the lazy val instead
     *
-    * @return the fitness value of this organism. A value
-    *         closer to 0 is a better fitness value
+    * @return the fitness value of this organism.
+    *
     */
-  def getFitness: Float
+  def fitnessFunction: Float
 
+  /**
+    * Construct and return a new organism by mutating this one. This organism should not be changed.
+    *
+    * @return the modified organism
+    */
   def mutate(): T
 
   /**

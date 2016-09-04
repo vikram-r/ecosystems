@@ -6,12 +6,12 @@
   *
   * output: list of integers that sum 100, and the dot product of the output with the input is maximized
   */
-class MaxWeightedSumEcosystem(val numOrganisms: Int,
+class MaxWeightedSumEcosystem(val inputData: List[Int],
+                              val numOrganisms: Int,
                               val crossoverRate: Float,
                               val mutationRate: Float,
                               val elitismRate: Float,
                               val threshold: Float,
-                              val inputData: List[Int], //todo asdfsdaf
                               val maxSum: Int) extends Ecosystem[MaxWeightedSumOrganism] {
 
   /**
