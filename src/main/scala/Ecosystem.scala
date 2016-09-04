@@ -1,22 +1,24 @@
 import scala.util.{Random, Try}
 
+//todo eventually do fitness calculations in parallel
 /**
   * Habitat for Organisms, used to simulate each evolution step
   *
   */
-trait Ecosystem {
+trait Ecosystem[T <: Organism[T]] {
 
   var numEvolutions: Int = 0
-  var organisms: List[Organism] = initialPopulation //the current inhabitants of this ecosystem
+  var organisms = initialPopulation //the current inhabitants of this ecosystem
 
   val numOrganisms: Int
   val crossoverRate: Float
   val mutationRate: Float
   val elitismRate: Float
+  val threshold: Float
 
   require(numOrganisms > 0, "numOrganisms must be > 0")
 
-  case class ResultData(alphaOrganism: Organism,
+  case class ResultData(alphaOrganism: T,
                         metThreshold: Boolean,
                         numEvolutions: Int)
 
@@ -25,7 +27,7 @@ trait Ecosystem {
     *
     * @return the list of randomly generated organisms
     */
-  def initialPopulation: List[Organism]
+  def initialPopulation: List[T]
 
   /**
     * Start the simulation for the given number of cycles
@@ -42,7 +44,7 @@ trait Ecosystem {
       println(mostFit.data)
       println(s"highest fitness: ${mostFit.fitness}")
 
-      if (mostFit.satisfiesThreshold()) {
+      if (mostFit.satisfiesThreshold(threshold)) {
         return ResultData(alphaOrganism = mostFit, metThreshold = true, numEvolutions = numEvolutions)
       }
     }
@@ -74,7 +76,8 @@ trait Ecosystem {
 
       Organism.uniformCrossover(
         breedingPool(firstIndex),
-        breedingPool(secondIndex)
+        breedingPool(secondIndex),
+        breedingPool(firstIndex).factory
       )
     }.flatMap(e ⇒ List(e._1, e._2))
 
@@ -90,6 +93,6 @@ trait Ecosystem {
     *
     * @return the organism with the highest fitness
     */
-  def findAlphaOrganism(): Organism = organisms.maxBy(_.fitness)
+  def findAlphaOrganism(): T = organisms.maxBy(_.fitness)
 
 }

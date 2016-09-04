@@ -26,20 +26,23 @@ object Console extends App {
   val ACCEPTABLE_THRESHOLD = 1f
 
   val weightedMaxSum = 100
-  implicit val inputData = new MaxWeightedSumInputData(List.randomListWithSum(15, weightedMaxSum), weightedMaxSum, ACCEPTABLE_THRESHOLD)
+  val inputData = List.randomListWithSum(15, weightedMaxSum)
 
   val ecosystem = new MaxWeightedSumEcosystem(
     numOrganisms = NUM_ORGANISMS,
     crossoverRate = CROSSOVER_RATE,
     mutationRate = MUTATION_RATE,
-    elitismRate = ELITISM_RATE
+    elitismRate = ELITISM_RATE,
+    threshold = ACCEPTABLE_THRESHOLD,
+    inputData = inputData,
+    maxSum = weightedMaxSum
   )
 
   val result = ecosystem.start(MAX_EVOLUTIONS)
 
   println("**************************************")
-  println(s"Optimal Fitness: ${inputData.optimalFitness}")
-  println(s"Input data: ${inputData.inputData}")
+  println(s"Optimal Fitness: ${result.alphaOrganism.optimalFitness}")
+  println(s"Input data: ${inputData}")
   println(s"Most fit  : ${result.alphaOrganism.data}")
 
   println(s"Result: $result")

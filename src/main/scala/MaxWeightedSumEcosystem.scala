@@ -1,5 +1,4 @@
 
-//todo eventually do fitness calculations in parallel
 /**
   * This ecosystem solves the following:
   *
@@ -10,14 +9,23 @@
 class MaxWeightedSumEcosystem(val numOrganisms: Int,
                               val crossoverRate: Float,
                               val mutationRate: Float,
-                              val elitismRate: Float)(implicit val inputData: MaxWeightedSumInputData) extends Ecosystem {
+                              val elitismRate: Float,
+                              val threshold: Float,
+                              val inputData: List[Int], //todo asdfsdaf
+                              val maxSum: Int) extends Ecosystem[MaxWeightedSumOrganism] {
 
   /**
     * Randomly generate the appropriate number of organisms for an initial population
     *
     * @return the list of randomly generated organisms
     */
-  override def initialPopulation: List[Organism] = {
-    List.fill(numOrganisms)(Organism(List.fill(inputData.size)(inputData.newOrganismDataElem()), inputData.fitnessFunc))
+  override def initialPopulation: List[MaxWeightedSumOrganism] = {
+    List.fill(numOrganisms)(MaxWeightedSumOrganism.newInstance(
+      data = List.fill(inputData.size)(MaxWeightedSumOrganism.newBit(maxSum)),
+      maxSum = maxSum,
+      inputData = inputData
+    ))
   }
+
+
 }
