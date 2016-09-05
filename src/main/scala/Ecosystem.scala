@@ -7,8 +7,8 @@ import scala.util.Random
   */
 trait Ecosystem[T <: Organism[T]] {
 
-  var numEvolutions: Int = 0
-  var organisms = initialPopulation //the current inhabitants of this ecosystem
+  private var numEvolutions: Int = 0
+  private var organisms = initialPopulation //the current inhabitants of this ecosystem
 
   val inputData: List[Int]
   val numOrganisms: Int
@@ -82,15 +82,8 @@ trait Ecosystem[T <: Organism[T]] {
 
     //iterator to generate new children
     val c = Iterator.continually {
-      //randomly select 2 organisms from the breeding pool to mate. Organisms can't mate with self
-      val firstIndex = Random.nextInt(breedingPool.size)
-      val secondIndex = Iterator.continually(Random.nextInt(breedingPool.size)).dropWhile(_ == firstIndex).next()
-
-      Organism.uniformCrossover(
-        breedingPool(firstIndex),
-        breedingPool(secondIndex),
-        breedingPool(firstIndex).factory
-      )
+      val (i, j) = selectParents(breedingPool)
+      Organism.uniformCrossover(i, j, i.factory)
     }.flatMap(e ⇒ List(e._1, e._2))
 
     val newGeneration = sorted.take(elitismNum) ++ c.take(sorted.size - elitismNum)
@@ -106,5 +99,18 @@ trait Ecosystem[T <: Organism[T]] {
     * @return the organism with the highest fitness
     */
   def findAlphaOrganism(): T = organisms.maxBy(_.fitness)
+
+  /**
+    * Determine how parents are selected from the breeding pool. This method selects 2 organisms at random, and ensures
+    * that an organism cannot mate with itself.
+    *
+    * @param breedingPool the list of possible organisms that can become a parent
+    * @return a tuple with the 2 selected organism parents
+    */
+  def selectParents(breedingPool: List[T]): (T, T) = {
+    val i = Random.nextInt(breedingPool.size)
+    val j = Iterator.continually(Random.nextInt(breedingPool.size)).dropWhile(_ == i).next()
+    (breedingPool(i), breedingPool(j))
+  }
 
 }
