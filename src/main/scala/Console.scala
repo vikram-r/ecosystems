@@ -25,23 +25,25 @@ object Console extends App {
 
   val weightedMaxSum = 100
 
-  val ecosystem = new MaxWeightedSumEcosystem(
-    inputData = List.randomListWithSum(15, weightedMaxSum),
+//  val ecosystem = new MaxWeightedSumEcosystem(
+//    inputData = List.randomListWithSum(15, weightedMaxSum),
+//    numOrganisms = NUM_ORGANISMS,
+//    crossoverRate = CROSSOVER_RATE,
+//    mutationRate = MUTATION_RATE,
+//    elitismRate = ELITISM_RATE,
+//    threshold = ACCEPTABLE_THRESHOLD,
+//    maxSum = weightedMaxSum
+//  )
+
+  val ecosystem = new KnapsackEcosystem(
+    allItems = List.fill(15)(KnapsackItem.randomItem(50, 100)),
+    capacity = 300,
     numOrganisms = NUM_ORGANISMS,
     crossoverRate = CROSSOVER_RATE,
     mutationRate = MUTATION_RATE,
     elitismRate = ELITISM_RATE,
-    threshold = ACCEPTABLE_THRESHOLD,
-    maxSum = weightedMaxSum
+    threshold = ACCEPTABLE_THRESHOLD
   )
 
-  val result = ecosystem.start(MAX_EVOLUTIONS)
-
-  println("**************************************")
-  println(s"Optimal Fitness: ${result.alphaOrganism.optimalFitness}")
-  println(s"Highest Fitness: ${result.alphaOrganism.fitness}")
-  println(s"Input data   : ${result.inputData}")
-  println(s"Most fit data: ${result.alphaOrganism}")
-
-  println(s"Result: $result")
+  ecosystem.run(MAX_EVOLUTIONS)
 }

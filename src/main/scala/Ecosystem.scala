@@ -10,7 +10,6 @@ trait Ecosystem[T <: Organism[T]] {
   private var numEvolutions: Int = 0
   private var organisms = initialPopulation //the current inhabitants of this ecosystem
 
-  val inputData: List[Int]
   val numOrganisms: Int
   val crossoverRate: Float
   val mutationRate: Float
@@ -21,11 +20,10 @@ trait Ecosystem[T <: Organism[T]] {
 
   case class ResultData(alphaOrganism: T,
                         metThreshold: Boolean,
-                        numEvolutions: Int,
-                        inputData: List[Int])
+                        numEvolutions: Int)
 
   /**
-    * Randomly generate the appropriate number of organisms for an initial population
+    * Define the initial population of the ecosystem
     *
     * @return the list of randomly generated organisms
     */
@@ -36,8 +34,12 @@ trait Ecosystem[T <: Organism[T]] {
     *
     * @param maxEvolutions the max number of times to evolve
     */
-  def start(maxEvolutions: Int): ResultData = {
+  def run(maxEvolutions: Int) = {
     require(maxEvolutions > 0, "maxEvolutions must be > 0")
+    handleResult(_run(maxEvolutions))
+  }
+
+  private def _run(maxEvolutions: Int): ResultData = {
     for(generation ← 0 until maxEvolutions) {
       println(s"generation: $generation")
       evolve()
@@ -50,16 +52,14 @@ trait Ecosystem[T <: Organism[T]] {
         return ResultData(
           alphaOrganism = mostFit,
           metThreshold = true,
-          numEvolutions = numEvolutions,
-          inputData = inputData
+          numEvolutions = numEvolutions
         )
       }
     }
     ResultData(
       alphaOrganism = findAlphaOrganism(),
       metThreshold = false,
-      numEvolutions = numEvolutions,
-      inputData = inputData
+      numEvolutions = numEvolutions
     )
   }
 
@@ -112,5 +112,12 @@ trait Ecosystem[T <: Organism[T]] {
     val j = Iterator.continually(Random.nextInt(breedingPool.size)).dropWhile(_ == i).next()
     (breedingPool(i), breedingPool(j))
   }
+
+
+  /**
+    * Handle the result after running the simulation
+    * @param result
+    */
+  def handleResult(result: ResultData)
 
 }

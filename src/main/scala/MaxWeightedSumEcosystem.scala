@@ -15,7 +15,7 @@ class MaxWeightedSumEcosystem(val inputData: List[Int],
                               val maxSum: Int) extends Ecosystem[MaxWeightedSumOrganism] {
 
   /**
-    * Randomly generate the appropriate number of organisms for an initial population
+    * Randomly generate the appropriate number of MaxWeightedSumOrganisms for an initial population
     *
     * @return the list of randomly generated organisms
     */
@@ -27,5 +27,16 @@ class MaxWeightedSumEcosystem(val inputData: List[Int],
     ))
   }
 
-
+  /**
+    * Basic logging
+    * @param result the result from running the Ecosystem
+    */
+  override def handleResult(result: ResultData): Unit = {
+    println("**************************************")
+    println(s"Optimal Fitness: ${result.alphaOrganism.optimalFitness}")
+    println(s"Highest Fitness: ${result.alphaOrganism.fitness}")
+    println(s"Input data   : $inputData")
+    println(s"Most fit data: ${result.alphaOrganism}")
+    println(s"Result: $result")
+  }
 }
