@@ -6,6 +6,7 @@ class KnapsackEcosystem(val allItems: List[KnapsackItem],
                         val crossoverRate: Float,
                         val mutationRate: Float,
                         val elitismRate: Float,
+                        val tournamentSize: Int,
                         val threshold: Float) extends Ecosystem[KnapsackOrganism] {
 
 
@@ -20,6 +21,19 @@ class KnapsackEcosystem(val allItems: List[KnapsackItem],
       allItems = allItems,
       capacity = capacity
     ))
+  }
+
+  /**
+    * Override the default selection algorithm and use tournament selection instead
+    */
+  override def selectParents(breedingPool: List[KnapsackOrganism]): (KnapsackOrganism, KnapsackOrganism) = {
+    def _tournamentSelection(): KnapsackOrganism = {
+      Iterator.continually {
+        breedingPool(Random.nextInt(breedingPool.size))
+      }.take(tournamentSize).maxBy(_.fitness)
+    }
+
+    (_tournamentSelection(), _tournamentSelection())
   }
 
   /**

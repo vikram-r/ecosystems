@@ -27,12 +27,12 @@ object Console extends App {
 
 //  val ecosystem = new MaxWeightedSumEcosystem(
 //    inputData = List.randomListWithSum(15, weightedMaxSum),
+//    maxSum = weightedMaxSum,
 //    numOrganisms = NUM_ORGANISMS,
 //    crossoverRate = CROSSOVER_RATE,
 //    mutationRate = MUTATION_RATE,
 //    elitismRate = ELITISM_RATE,
-//    threshold = ACCEPTABLE_THRESHOLD,
-//    maxSum = weightedMaxSum
+//    threshold = ACCEPTABLE_THRESHOLD
 //  )
 
   val ecosystem = new KnapsackEcosystem(
@@ -42,6 +42,7 @@ object Console extends App {
     crossoverRate = CROSSOVER_RATE,
     mutationRate = MUTATION_RATE,
     elitismRate = ELITISM_RATE,
+    tournamentSize = 2,
     threshold = ACCEPTABLE_THRESHOLD
   )
 

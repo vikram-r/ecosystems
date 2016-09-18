@@ -40,7 +40,6 @@ object Organism {
 
 }
 
-//todo consider using a Vector instead of a List to represent underlying data
 abstract class Organism[T <: Organism[T]](val data: List[Int]) {
 
   lazy val fitness: Float = fitnessFunction
