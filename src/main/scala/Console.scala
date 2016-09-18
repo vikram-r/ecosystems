@@ -23,11 +23,9 @@ object Console extends App {
   //Threshold percentage of optimal fitness acceptable as result
   val ACCEPTABLE_THRESHOLD = 1f
 
-  val weightedMaxSum = 100
-
 //  val ecosystem = new MaxWeightedSumEcosystem(
-//    inputData = List.randomListWithSum(15, weightedMaxSum),
-//    maxSum = weightedMaxSum,
+//    inputData = List.randomListWithSum(15, 300),
+//    maxSum = 100,
 //    numOrganisms = NUM_ORGANISMS,
 //    crossoverRate = CROSSOVER_RATE,
 //    mutationRate = MUTATION_RATE,

@@ -2,9 +2,16 @@
 /**
   * This ecosystem solves the following:
   *
-  * input: list of integers that sum 100
+  * input: list of integers
   *
-  * output: list of integers that sum 100, and the dot product of the output with the input is maximized
+  * output: list of integers that match the following conditions
+  *  - same size as input
+  *  - sum of all elements is maxSum
+  *  - dot product of the output with the input is maximized
+  *
+  *  This is a trivial problem, as the optimal solution is a list of the form [0, 0, 0, maxSum, 0]
+  *  where the index of the only non-zero value is the index that contains the maximum value in the
+  *  input list.
   */
 class MaxWeightedSumEcosystem(val inputData: List[Int],
                               val maxSum: Int,
