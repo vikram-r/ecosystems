@@ -38,7 +38,7 @@ Now you should override the following:
 
 3. `optimalFitness`: Defines the best possible fitness for this custom `Organism` type. In the `MaxWeightedSum` example, the `optimalFitness` is easy to define, since the best case solution is known. This will almost never be the case in reality, so an "estimate" is sufficient here. If even that is not possible, you can simply use `Integer.MAX_VALUE`, or `Integer.MIN_VALUE`, depending on how your fitness function is defined. 
 
-4. `factory`: this method should define a first class function that describes how to create a new instance of your custom `Organism` (essentially a constructor). The reason for this is to ensure that generic operations, such as [Crossover functions](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)), will produce a new instance of your custom `Organism`. This is also why the `Organism` class that you extend uses an F-bounded type parameter. 
+4. `factory`: this method should define a first class function that describes how to create a new instance of your custom `Organism` (essentially a constructor). The reason for this is to ensure that generic operations, such as [crossover functions](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)), will produce a new instance of your custom `Organism`. This is also why the `Organism` class that you extend uses an [F-bounded type parameter](https://tpolecat.github.io/2015/04/29/f-bounds.html). 
 
 
 ### Ecosystems
