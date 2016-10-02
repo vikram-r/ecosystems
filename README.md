@@ -27,7 +27,7 @@ Extending `Organism` allows you to define the basic rules for each candidate sol
 ```scala
 class CustomOrganism(data: List[Int]
                        /* more custom parameters */
-                      ) extends Organism[KnapsackOrganism](data){
+                      ) extends Organism[CustomOrganism](data){
 ```
 
 Now you should override the following:
