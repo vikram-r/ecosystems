@@ -117,8 +117,8 @@ trait Ecosystem[T <: Organism[T]] {
     val sorted = organisms.sortBy(_.fitness).reverse
     val (elitists, plebians) = sorted.splitAt(elitismNum)
     organisms = (
-      elitists ++ plebians.takeBreedingPool(crossoverNum).breedChildren(sorted.size - elitists.size))
-      .applyMutation(mutationRate)
+      elitists ++ plebians.takeBreedingPool(crossoverNum).breedChildren(sorted.size - elitists.size)
+      ).applyMutation(mutationRate)
     numEvolutions += 1
   }
 
