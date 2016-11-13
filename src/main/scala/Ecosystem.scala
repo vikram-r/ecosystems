@@ -23,6 +23,43 @@ trait Ecosystem[T <: Organism[T]] {
                         numEvolutions: Int)
 
   /**
+    * Additional methods for dealing with an entire population of organisms. Populations are
+    * represented as a List of Organisms
+    * @param population the organisms in this Population
+    */
+  implicit class Population(population: List[T]) {
+
+    /**
+      * Apply mutations at a given rate to the population
+      * @param rate the probability that a mutation is applied per organism
+      * @return the mutated population
+      */
+    def applyMutation(rate: Float): List[T] =
+      population.map(c ⇒ if (Random.nextFloat() <= rate) c.mutate() else c)
+
+    //todo Should this use a fitness proportionate selction algorithm? Should it be user definable?
+    /**
+      * Select the given number of organisms designated for breeding from this population.
+      * @param n the number of organisms that should be in the breeding pool
+      * @return "n" organisms that are candidates for breeding, or less if the population size is smaller than "n"
+      */
+    def takeBreedingPool(n: Int): List[T] = population.take(n)
+
+    /**
+      * Breed this population until the given number of children are generated. Calls [[selectParents()]] to
+      * determine the parents.
+      * @param n the number of children to breed
+      * @return n child organisms bred from the Population
+      */
+    def breedChildren(n: Int): List[T] = {
+      Iterator.continually {
+        val (i, j) = selectParents(population)
+        Organism.uniformCrossover(i, j, i.factory)
+      }.flatMap(c ⇒ List(c._1, c._2)).take(n).toList
+    }
+  }
+
+  /**
     * Define the initial population of the ecosystem
     *
     * @return the list of randomly generated organisms
@@ -78,18 +115,10 @@ trait Ecosystem[T <: Organism[T]] {
     val crossoverNum = (crossoverRate * numOrganisms).toInt
 
     val sorted = organisms.sortBy(_.fitness).reverse
-    val breedingPool = sorted.slice(elitismNum, elitismNum + crossoverNum)
-
-    //iterator to generate new children
-    val c = Iterator.continually {
-      val (i, j) = selectParents(breedingPool)
-      Organism.uniformCrossover(i, j, i.factory)
-    }.flatMap(e ⇒ List(e._1, e._2))
-
-    val newGeneration = sorted.take(elitismNum) ++ c.take(sorted.size - elitismNum)
-    val mutatedGeneration = newGeneration.map(c ⇒ if (Random.nextFloat() <= mutationRate) c.mutate() else c)
-
-    organisms = mutatedGeneration
+    val (elitists, plebians) = sorted.splitAt(elitismNum)
+    organisms = (
+      elitists ++ plebians.takeBreedingPool(crossoverNum).breedChildren(sorted.size - elitists.size))
+      .applyMutation(mutationRate)
     numEvolutions += 1
   }
 
