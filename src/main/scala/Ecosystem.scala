@@ -1,3 +1,7 @@
+import java.util.concurrent.Executors
+
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future, ExecutionContext}
 import scala.util.Random
 
 //todo eventually do fitness calculations in parallel
@@ -22,15 +26,23 @@ trait Ecosystem[T <: Organism[T]] {
                         metThreshold: Boolean,
                         numEvolutions: Int)
 
+  val executor = {
+    val numThreads = Runtime.getRuntime.availableProcessors()
+    Executors.newFixedThreadPool(numThreads)
+  }
+  implicit val ec: ExecutionContext = ExecutionContext.fromExecutor(executor)
+
   /**
     * Additional methods for dealing with an entire population of organisms. Populations are
     * represented as a List of Organisms
+    *
     * @param population the organisms in this Population
     */
   implicit class Population(population: List[T]) {
 
     /**
       * Apply mutations at a given rate to the population
+      *
       * @param rate the probability that a mutation is applied per organism
       * @return the mutated population
       */
@@ -40,6 +52,7 @@ trait Ecosystem[T <: Organism[T]] {
     //todo Should this use a fitness proportionate selction algorithm? Should it be user definable?
     /**
       * Select the given number of organisms designated for breeding from this population.
+      *
       * @param n the number of organisms that should be in the breeding pool
       * @return "n" organisms that are candidates for breeding, or less if the population size is smaller than "n"
       */
@@ -48,6 +61,7 @@ trait Ecosystem[T <: Organism[T]] {
     /**
       * Breed this population until the given number of children are generated. Calls [[selectParents()]] to
       * determine the parents.
+      *
       * @param n the number of children to breed
       * @return n child organisms bred from the Population
       */
@@ -74,6 +88,7 @@ trait Ecosystem[T <: Organism[T]] {
   def run(maxEvolutions: Int) = {
     require(maxEvolutions > 0, "maxEvolutions must be > 0")
     handleResult(_run(maxEvolutions))
+    executor.shutdown()
   }
 
   private def _run(maxEvolutions: Int): ResultData = {
@@ -114,6 +129,14 @@ trait Ecosystem[T <: Organism[T]] {
     val elitismNum = (elitismRate * numOrganisms).toInt
     val crossoverNum = (crossoverRate * numOrganisms).toInt
 
+    // compute the fitness of all organisms in parallel
+    val futures = for (o ← organisms) yield Future {
+      o.fitness
+    }
+
+    // wait for all fitness values to be computed
+    Await.result(Future.sequence(futures), Duration.Inf)
+
     val sorted = organisms.sortBy(_.fitness).reverse
     val (elitists, plebians) = sorted.splitAt(elitismNum)
     organisms = (
@@ -145,6 +168,7 @@ trait Ecosystem[T <: Organism[T]] {
 
   /**
     * Handle the result after running the simulation
+    *
     * @param result
     */
   def handleResult(result: ResultData)
