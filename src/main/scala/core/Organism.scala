@@ -1,3 +1,5 @@
+package core
+
 import scala.util.Random
 
 /**

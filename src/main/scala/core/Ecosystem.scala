@@ -1,7 +1,9 @@
+package core
+
 import java.util.concurrent.Executors
 
 import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future, ExecutionContext}
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.Random
 
 //todo eventually do fitness calculations in parallel

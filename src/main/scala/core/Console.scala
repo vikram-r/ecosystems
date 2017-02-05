@@ -1,9 +1,12 @@
+package core
+
+import examples.knapsack.{KnapsackItem, KnapsackEcosystem}
+
 
 /**
   * Created by vikram on 8/1/16.
   */
 object Console extends App {
-  import ListHelpers._
 
   //number of organisms per generation
   val NUM_ORGANISMS = 100

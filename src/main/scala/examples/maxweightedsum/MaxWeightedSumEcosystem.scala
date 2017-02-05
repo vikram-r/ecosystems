@@ -1,3 +1,6 @@
+package examples.maxweightedsum
+
+import core.Ecosystem
 
 /**
   * This ecosystem solves the following:
@@ -36,6 +39,7 @@ class MaxWeightedSumEcosystem(val inputData: List[Int],
 
   /**
     * Basic logging
+    *
     * @param result the result from running the Ecosystem
     */
   override def handleResult(result: ResultData): Unit = {

@@ -1,3 +1,7 @@
+package examples.knapsack
+
+import core.Ecosystem
+
 import scala.util.Random
 
 class KnapsackEcosystem(val allItems: List[KnapsackItem],

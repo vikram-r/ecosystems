@@ -1,3 +1,7 @@
+package examples.maxweightedsum
+
+import core.Organism
+
 import scala.util.Random
 
 object MaxWeightedSumOrganism {

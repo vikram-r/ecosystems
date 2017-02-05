@@ -1,3 +1,7 @@
+package examples.knapsack
+
+import core.Organism
+
 import scala.util.Random
 
 /**
