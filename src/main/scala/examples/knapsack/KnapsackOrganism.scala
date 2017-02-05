@@ -33,7 +33,7 @@ class KnapsackOrganism(data: List[Int], allItems: List[KnapsackItem], capacity: 
   override val optimalFitness: Float = allItems.map(_.value).sum
 
   override def factory: (List[Int]) ⇒ KnapsackOrganism =
-    (d: List[Int]) ⇒ new KnapsackOrganism(data, allItems, capacity)
+    (d: List[Int]) ⇒ new KnapsackOrganism(d, allItems, capacity)
 
   /**
     * Flip the bit of a random item in the knapsack
