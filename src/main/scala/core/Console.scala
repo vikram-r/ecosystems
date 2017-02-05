@@ -1,5 +1,6 @@
 package core
 
+import examples.changemaking.ChangeMakingEcosystem
 import examples.knapsack.{KnapsackItem, KnapsackEcosystem}
 
 
@@ -8,22 +9,22 @@ import examples.knapsack.{KnapsackItem, KnapsackEcosystem}
   */
 object Console extends App {
 
-  //number of organisms per generation
+  // number of organisms per generation
   val NUM_ORGANISMS = 100
 
-  //percent of organisms that are allowed to mate per generation
+  // percent of organisms that are allowed to mate per generation
   val CROSSOVER_RATE = .80f
 
-  //percent chance of a organisms to mutate per generation
+  // percent chance for an organisms to mutate per generation
   val MUTATION_RATE = .05f
 
   //percent of organisms preserved per generation
   val ELITISM_RATE = .00f
 
-  //max number of evolution steps
+  // max number of evolution steps
   val MAX_EVOLUTIONS = 10000
 
-  //Threshold percentage of optimal fitness acceptable as result
+  // Threshold percentage of optimal fitness acceptable as result
   val ACCEPTABLE_THRESHOLD = 1f
 
 //  val ecosystem = new MaxWeightedSumEcosystem(
@@ -46,6 +47,16 @@ object Console extends App {
     tournamentSize = 2,
     threshold = ACCEPTABLE_THRESHOLD
   )
+
+//  val ecosystem = new ChangeMakingEcosystem(
+//    allowedCoins = List(1, 5, 10, 25),
+//    targetValue = 1000,
+//    numOrganisms = NUM_ORGANISMS,
+//    crossoverRate = CROSSOVER_RATE,
+//    mutationRate = MUTATION_RATE,
+//    elitismRate = ELITISM_RATE,
+//    threshold = ACCEPTABLE_THRESHOLD
+//  )
 
   ecosystem.run(MAX_EVOLUTIONS)
 }
