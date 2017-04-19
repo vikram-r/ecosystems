@@ -2,11 +2,13 @@
 
 Ecosystems are an easily extendable way to quickly define and test genetic algorithms. By defining an ecosystem, a user will be able to specify an input data set, fitness function, a variety of hyperparameters, and more. The goal is to make the underlying genetic algorithm plumbing as generic as possible.
 
-This project has 2 examples included:
+This project has 3 examples included:
 
 1. **MaxWeightedSum**: Solves the trivial problem of finding an array of the same size as an input array such that it both sums a given value, and maximizes the result of the dot product between itself and the input array. This problem is trivial because the optimal solution is always of the form `[0,0,0,SUM,0]`, where the index of SUM is the index of the maximum value in the input array.
 
 2. **Knapsack Problem**: [The Knapsack Problem](https://en.wikipedia.org/wiki/Knapsack_problem)
+
+3. **Change-Making Problem**: [The Change-Making Problem](https://en.wikipedia.org/wiki/Change-making_problem)
 
 
 ## Usage
