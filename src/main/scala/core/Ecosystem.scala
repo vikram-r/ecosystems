@@ -24,7 +24,7 @@ trait Ecosystem[T <: Organism[T]] {
 
   require(numOrganisms > 0, "numOrganisms must be > 0")
 
-  case class ResultData(alphaOrganism: T,
+  case class ResultData(alphaOrganisms: Seq[T],
                         metThreshold: Boolean,
                         numEvolutions: Int)
 
@@ -94,27 +94,32 @@ trait Ecosystem[T <: Organism[T]] {
   }
 
   private def _run(maxEvolutions: Int): ResultData = {
-    for(generation ← 0 until maxEvolutions) {
-      println(s"generation: $generation")
-      evolve()
+    val initialResult = ResultData(
+      alphaOrganisms = Seq.empty,
+      metThreshold = false,
+      numEvolutions = 0
+    )
+    // TODO any way to get rid of this?
+    var metThreshold = false
+    // toStream is required to force takeWhile to lazily evaluate the mutable metThreshold
+    (0 until maxEvolutions).toStream.takeWhile(_ ⇒ !metThreshold).foldLeft(initialResult) {
+      (result, generation) ⇒ {
+        println(s"generation: $generation")
+        evolve()
 
-      val mostFit = findAlphaOrganism()
-      println(mostFit.data)
-      println(s"highest fitness: ${mostFit.fitness}")
+        val mostFit = findAlphaOrganism()
+        println(mostFit.data)
+        println(s"highest fitness: ${mostFit.fitness}")
 
-      if (mostFit.satisfiesThreshold(threshold)) {
-        return ResultData(
-          alphaOrganism = mostFit,
-          metThreshold = true,
-          numEvolutions = numEvolutions
+        metThreshold = mostFit.satisfiesThreshold(threshold)
+
+        result.copy(
+          alphaOrganisms = result.alphaOrganisms :+ mostFit,
+          metThreshold = metThreshold,
+          numEvolutions = result.numEvolutions + 1
         )
       }
     }
-    ResultData(
-      alphaOrganism = findAlphaOrganism(),
-      metThreshold = false,
-      numEvolutions = numEvolutions
-    )
   }
 
   /**

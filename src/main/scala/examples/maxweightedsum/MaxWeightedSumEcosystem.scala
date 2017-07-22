@@ -43,11 +43,13 @@ class MaxWeightedSumEcosystem(val inputData: List[Int],
     * @param result the result from running the Ecosystem
     */
   override def handleResult(result: ResultData): Unit = {
+    val lastGenerationAlpha = result.alphaOrganisms.last
     println("**************************************")
-    println(s"Optimal Fitness: ${result.alphaOrganism.optimalFitness}")
-    println(s"Highest Fitness: ${result.alphaOrganism.fitness}")
+    println(s"Optimal Fitness: ${lastGenerationAlpha.optimalFitness}")
+    println(s"Highest Fitness: ${lastGenerationAlpha.fitness}")
     println(s"Input data   : $inputData")
-    println(s"Most fit data: ${result.alphaOrganism}")
-    println(s"Result: $result")
+    println(s"Most fit data: $lastGenerationAlpha")
+    println(s"Number Evolutions: ${result.numEvolutions}")
+    println(s"Met Threshold: ${result.metThreshold}")
   }
 }

@@ -1,7 +1,8 @@
 package core
 
 import examples.changemaking.ChangeMakingEcosystem
-import examples.knapsack.{KnapsackItem, KnapsackEcosystem}
+import examples.knapsack.{KnapsackEcosystem, KnapsackItem}
+import examples.maxweightedsum.MaxWeightedSumEcosystem
 
 
 /**
@@ -27,6 +28,7 @@ object Console extends App {
   // Threshold percentage of optimal fitness acceptable as result
   val ACCEPTABLE_THRESHOLD = 1f
 
+//  import ListHelpers._
 //  val ecosystem = new MaxWeightedSumEcosystem(
 //    inputData = List.randomListWithSum(15, 300),
 //    maxSum = 100,
@@ -36,7 +38,6 @@ object Console extends App {
 //    elitismRate = ELITISM_RATE,
 //    threshold = ACCEPTABLE_THRESHOLD
 //  )
-
   val ecosystem = new KnapsackEcosystem(
     allItems = List.fill(15)(KnapsackItem.randomItem(50, 100)),
     capacity = 300,

@@ -31,13 +31,14 @@ class ChangeMakingEcosystem(val allowedCoins: List[Int],
     * @param result
     */
   override def handleResult(result: ResultData): Unit = {
+    val lastGenerationAlpha = result.alphaOrganisms.last
     println("**************************************")
     println(s"allowedCoins: \n${allowedCoins.mkString("\n")}")
     println(s"targetValue: $targetValue")
-    println(s"value achieved: ${result.alphaOrganism.totalValue}")
-    println(s"number coins used: ${result.alphaOrganism.numberCoins}")
+    println(s"value achieved: ${lastGenerationAlpha.totalValue}")
+    println(s"number coins used: ${lastGenerationAlpha.numberCoins}")
 
-    println(s"coins used: ${allowedCoins.zip(result.alphaOrganism.data).toMap}")
+    println(s"coins used: ${allowedCoins.zip(lastGenerationAlpha.data).toMap}")
   }
 
   /**

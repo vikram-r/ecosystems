@@ -46,15 +46,16 @@ class KnapsackEcosystem(val allItems: List[KnapsackItem],
     * @param result the result data
     */
   override def handleResult(result: ResultData): Unit = {
+    val lastGenerationAlpha = result.alphaOrganisms.last
     println("**************************************")
     println(s"All possible KnapsackItems: \n${allItems.mkString("\n")}")
 
     println(s"Max capacity allowed: $capacity")
-    println(s"Highest possible value: ${result.alphaOrganism.optimalFitness}")
+    println(s"Highest possible value: ${lastGenerationAlpha.optimalFitness}")
 
-    println(s"Total value achieved: ${result.alphaOrganism.fitness}")
-    println(s"Capacity used: ${result.alphaOrganism.capacityUsed}")
+    println(s"Total value achieved: ${lastGenerationAlpha.fitness}")
+    println(s"Capacity used: ${lastGenerationAlpha.capacityUsed}")
 
-    println(s"Most fit data list: ${result.alphaOrganism}")
+    println(s"Most fit data list: $lastGenerationAlpha")
   }
 }
