@@ -26,7 +26,8 @@ trait Ecosystem[T <: Organism[T]] {
 
   case class ResultData(alphaOrganisms: Seq[T],
                         metThreshold: Boolean,
-                        numEvolutions: Int)
+                        numEvolutions: Int,
+                        averageFitness: Seq[Float])
 
   val executor = {
     val numThreads = Runtime.getRuntime.availableProcessors()
@@ -97,7 +98,8 @@ trait Ecosystem[T <: Organism[T]] {
     val initialResult = ResultData(
       alphaOrganisms = Seq.empty,
       metThreshold = false,
-      numEvolutions = 0
+      numEvolutions = 0,
+      averageFitness = Seq.empty
     )
     // TODO any way to get rid of this?
     var metThreshold = false
@@ -112,11 +114,13 @@ trait Ecosystem[T <: Organism[T]] {
         println(s"highest fitness: ${mostFit.fitness}")
 
         metThreshold = mostFit.satisfiesThreshold(threshold)
+        val populationFitness = organisms.map(_.fitness)
 
         result.copy(
           alphaOrganisms = result.alphaOrganisms :+ mostFit,
           metThreshold = metThreshold,
-          numEvolutions = result.numEvolutions + 1
+          numEvolutions = result.numEvolutions + 1,
+          averageFitness = result.averageFitness :+ populationFitness.sum / populationFitness.size
         )
       }
     }
